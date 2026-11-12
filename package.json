@@ -1,0 +1,20 @@
+{
+  "name": "temple-run-jungle-escape",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Temple Run: Jungle Escape - a 3D endless runner",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 3000",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 3000",
+    "start": "node serve.js"
+  },
+  "dependencies": {
+    "@fontsource/lilita-one": "^5.2.5",
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "vite": "^7.1.3"
+  }
+}

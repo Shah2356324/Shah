@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0b1410">
+<title>Temple Run — Jungle Escape</title>
+</head>
+<body>
+<div id="stage">
+  <canvas id="scene"></canvas>
+  <div id="vignette"></div>
+  <div id="speedlines"></div>
+  <div id="flash"></div>
+
+  <!-- ================= HUD ================= -->
+  <div id="hud" hidden>
+    <div class="hud-top">
+      <div class="hud-left">
+        <div class="stat-card">
+          <div class="stat-label">DISTANCE</div>
+          <div class="stat-value"><span id="dist">0</span><small>m</small></div>
+        </div>
+        <div class="stat-card small">
+          <div class="stat-label">SCORE</div>
+          <div class="stat-value"><span id="score">0</span></div>
+        </div>
+      </div>
+      <div class="hud-mid">
+        <div id="mult" class="mult-badge">×1</div>
+        <div id="powerups" class="powerups"></div>
+      </div>
+      <div class="hud-right">
+        <div class="stat-card coin-card"><span class="coin-ico"></span><span id="coins">0</span></div>
+        <button id="pauseBtn" class="icon-btn" aria-label="Pause">❚❚</button>
+      </div>
+    </div>
+    <div id="turnHint" class="turn-hint" hidden>
+      <span class="turn-arrow">◀</span><span class="turn-text">TURN</span>
+    </div>
+    <div id="toasts" class="toasts"></div>
+    <div id="hintBar" class="hint-bar">Swipe ◀ ▶ dodge &nbsp;·&nbsp; ▲ jump &nbsp;·&nbsp; ▼ slide</div>
+  </div>
+
+  <!-- ================= MAIN MENU ================= -->
+  <section id="menu" class="screen">
+    <div class="dust"></div>
+    <div class="menu-inner">
+      <div class="logo-wrap">
+        <div class="logo-kicker">JUNGLE ESCAPE</div>
+        <h1 class="logo">TEMPLE<span>RUN</span></h1>
+        <div class="logo-sub">RUN · DODGE · SURVIVE</div>
+      </div>
+
+      <div class="menu-stats">
+        <div class="mini-stat"><span class="mini-label">BEST</span><b id="menuBest">0</b></div>
+        <div class="mini-stat"><span class="coin-ico"></span><b id="menuBank">0</b></div>
+        <div class="mini-stat"><span class="mini-label">RUNNER</span><b id="menuChar">EXPLORER</b></div>
+      </div>
+
+      <div class="menu-buttons">
+        <button id="playBtn" class="btn btn-primary btn-xl">
+          <span class="btn-shine"></span>
+          <span class="btn-label">PLAY</span>
+          <span class="btn-sub">TAP TO RUN</span>
+        </button>
+        <div class="menu-row">
+          <button id="charsBtn" class="btn btn-wood"><span class="btn-shine"></span>CHARACTERS</button>
+          <button id="missionsBtn" class="btn btn-wood"><span class="btn-shine"></span>MISSIONS</button>
+        </div>
+        <div class="menu-row">
+          <button id="howBtn" class="btn btn-ghost"><span class="btn-shine"></span>HOW TO PLAY</button>
+          <button id="soundBtn" class="btn btn-ghost"><span class="btn-shine"></span>SOUND: ON</button>
+        </div>
+      </div>
+
+      <div class="menu-foot">
+        <span class="rune">✦</span> AN ENDLESS TEMPLE ESCAPE <span class="rune">✦</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CHARACTERS ================= -->
+  <section id="chars" class="screen" hidden>
+    <div class="panel wide">
+      <div class="panel-head">
+        <h2 class="panel-title">RUNNERS</h2>
+        <p class="panel-sub">Spend coins to unlock new explorers — each one earns more.</p>
+      </div>
+      <div class="bank-line">BANK <span class="coin-ico"></span> <b id="charBank">0</b></div>
+      <div id="charGrid" class="char-grid"></div>
+      <button id="charsBack" class="btn btn-wood btn-back">BACK</button>
+    </div>
+  </section>
+
+  <!-- ================= MISSIONS ================= -->
+  <section id="missions" class="screen" hidden>
+    <div class="panel wide">
+      <div class="panel-head">
+        <h2 class="panel-title">MISSIONS</h2>
+        <p class="panel-sub">Complete objectives, claim coins, keep running.</p>
+      </div>
+      <div class="bank-line">BANK <span class="coin-ico"></span> <b id="missionBank">0</b></div>
+      <div id="missionList" class="mission-list"></div>
+      <button id="missionsBack" class="btn btn-wood btn-back">BACK</button>
+    </div>
+  </section>
+
+  <!-- ================= HOW TO PLAY ================= -->
+  <section id="how" class="screen" hidden>
+    <div class="panel">
+      <div class="panel-head">
+        <h2 class="panel-title">HOW TO PLAY</h2>
+        <p class="panel-sub">The temple does not forgive hesitation.</p>
+      </div>
+      <div class="how-grid">
+        <div class="how-item"><span class="key">◀ ▶</span><div><b>SWIPE / ARROWS</b><p>Switch lanes and turn corners.</p></div></div>
+        <div class="how-item"><span class="key">▲</span><div><b>JUMP</b><p>Leap over logs, fire pits and broken bridges.</p></div></div>
+        <div class="how-item"><span class="key">▼</span><div><b>SLIDE</b><p>Duck under hanging beams and vines.</p></div></div>
+        <div class="how-item"><span class="key">×</span><div><b>POWER-UPS</b><p>Magnet, shield, boost and double coins.</p></div></div>
+        <div class="how-item"><span class="key">!</span><div><b>STUMBLE</b><p>Clip a log and the guardians close in. Two stumbles and you are caught.</p></div></div>
+        <div class="how-item"><span class="key">◈</span><div><b>SCORE</b><p>Distance × multiplier + coins. The longer you last, the higher it climbs.</p></div></div>
+      </div>
+      <button id="howBack" class="btn btn-wood btn-back">BACK</button>
+    </div>
+  </section>
+
+  <!-- ================= PAUSE ================= -->
+  <section id="pause" class="screen" hidden>
+    <div class="panel">
+      <div class="panel-head">
+        <h2 class="panel-title">PAUSED</h2>
+        <p class="panel-sub">Catch your breath. The temple waits.</p>
+      </div>
+      <div class="pause-stats">
+        <div class="ov-stat"><span>DISTANCE</span><b id="pauseDist">0</b><small>m</small></div>
+        <div class="ov-stat"><span>COINS</span><b id="pauseCoins">0</b></div>
+      </div>
+      <button id="resumeBtn" class="btn btn-primary">RESUME</button>
+      <div class="menu-row">
+        <button id="restartBtn" class="btn btn-wood">RESTART</button>
+        <button id="quitBtn" class="btn btn-ghost">QUIT</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GAME OVER ================= -->
+  <section id="over" class="screen" hidden>
+    <div class="panel over-panel">
+      <div id="newBest" class="new-best" hidden>★ NEW BEST ★</div>
+      <h2 id="overTitle" class="over-title">CAUGHT!</h2>
+      <p id="overSub" class="over-sub">The temple guardians got you.</p>
+      <div class="over-stats">
+        <div class="ov-stat"><span>SCORE</span><b id="overScore">0</b></div>
+        <div class="ov-stat"><span>DISTANCE</span><b id="overDist">0</b><small>m</small></div>
+        <div class="ov-stat"><span>COINS</span><b id="overCoins">0</b></div>
+        <div class="ov-stat"><span>BEST</span><b id="overBest">0</b></div>
+      </div>
+      <div class="over-bank">BANK <span class="coin-ico"></span> <b id="overBank">0</b></div>
+      <button id="reviveBtn" class="btn btn-revive">
+        <span class="btn-shine"></span>
+        <span class="revive-main">REVIVE</span>
+        <span class="revive-cost">100 <span class="coin-ico"></span></span>
+      </button>
+      <div class="menu-row">
+        <button id="againBtn" class="btn btn-primary"><span class="btn-shine"></span>RUN AGAIN</button>
+        <button id="homeBtn" class="btn btn-wood"><span class="btn-shine"></span>HOME</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BOOT ================= -->
+  <div id="boot">
+    <div class="boot-logo">TEMPLE<span>RUN</span></div>
+    <div class="boot-bar"><i></i></div>
+    <div class="boot-text">CARVING THE TEMPLE…</div>
+  </div>
+</div>
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
